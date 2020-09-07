@@ -24,6 +24,10 @@
         "description": "Put here list of id's -  (not usernames) for users.",
         "value": ""
       },
+      "LOG": {
+        "description": "Put here channel id -  (not usernames).",
+        "value": ""
+      },
       "HEROKU_API_KEY": {
         "description": " You heroku api"
       },
