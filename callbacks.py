@@ -114,9 +114,9 @@ def restartHandler(update,context):
         herokuHelper = HerokuHelper(Config.HEROKU_APP_NAME,Config.HEROKU_API_KEY)
         herokuHelper.restart()
         update.message.reply_text("Restarted.")
-        if Config.LOG:
-            bot.send_message(Config.LOG,
-                "<b>[Restart]</b>\n"
+        if Config.LOGS:
+            bot.send_message(Config.LOGS,
+                "<b>[Restarted]</b>\n\n"
                 f"<b>Admin:</b> {mention_html(user.id, user.first_name)}\n"
                 f"<b>Event Stamp:</b> <code>{current_time}</code>",
                  parse_mode=ParseMode.HTML

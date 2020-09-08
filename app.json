@@ -1,6 +1,7 @@
 {
     "name": "Stella's Control Center ",
     "description": "Stella's Control Center is a telegram bot that uses Heroku API and helps manage heroku app from telegram",
+    "logo": "https://telegra.ph/file/086c947c7dd0f9797e764.jpg",
     "keywords": [
       "stella",
       "Control-Center",
@@ -22,10 +23,12 @@
       },
       "SUPPORT_USERS": {
         "description": "Put here list of id's -  (not usernames) for users.",
+        "required": false,
         "value": ""
       },
-      "LOG": {
+      "LOGS": {
         "description": "Put here channel id -  (not usernames).",
+        "required": false,
         "value": ""
       },
       "HEROKU_API_KEY": {
