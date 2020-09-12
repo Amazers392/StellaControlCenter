@@ -11,6 +11,9 @@ import math
 import heroku3
 from telegram.utils.helpers import mention_html
 
+datetime_fmt = "%Y-%m-%d // %H:%M"
+current_time = datetime.utcnow().strftime(datetime_fmt)
+
 help_string = """<b>Available commands:</b>
 - /start: for start message.
 - /help: for get this message.
@@ -100,7 +103,34 @@ def adminsHandler(update,context):
                 text2 += "\n - ({}) - not found".format(user_id)
     message.reply_text(text1 + "\n" + text2 + "\n",
                        parse_mode=ParseMode.MARKDOWN)
-
+    
+@run_async
+def addsudoHandler(update,context):
+    sudo = Config.SUDO_USERS 
+    message = update.effective_message
+    user_id = message.from_user.id
+    if int(user_id) in sudo:
+        message = update.effective_message
+        args = message.text.split(" ",1)
+        if message.reply_to_message:
+            suser_id = message.reply_to_message.from_user.id
+        elif len(args) > 1:
+            try:
+                suser_id = int(args[1])
+            except:
+                message.reply_text("Bad UserId Provided.")
+                return
+        else:
+            message.reply_text("Provide Proper UserId.")
+            return
+        herokuHelper = HerokuHelper(Config.HEROKU_APP_NAME,Config.HEROKU_API_KEY)
+        Config.SUDO_USERS.append(suser_id)
+        herokuHelper.addEnvVar("SUDO_USERS", ",".join(Config.SUDO_USERS))
+        message.reply_text("Authorized User.")
+        
+    else:
+        message.reply_text(non_admin,parse_mode=ParseMode.HTML)
+        
 @run_async
 def restartHandler(update,context):
     bot = context.bot
@@ -108,8 +138,6 @@ def restartHandler(update,context):
     message = update.effective_message
     user = update.effective_user
     user_id = message.from_user.id
-    datetime_fmt = "%Y-%m-%d // %H:%M"
-    current_time = datetime.utcnow().strftime(datetime_fmt)
     if int(user_id) in sudo:
         herokuHelper = HerokuHelper(Config.HEROKU_APP_NAME,Config.HEROKU_API_KEY)
         herokuHelper.restart()
